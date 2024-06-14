@@ -74,12 +74,14 @@ void changeColor(Color color) {
             icon: const Icon(Icons.clear),
             onPressed: () => setState(() => points.clear()),
           ),
-          IconButton(
-            icon: const Icon(Icons.color_lens),
-            onPressed: pickColor,
-          ),
         ],
       ),
+       floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
+          tooltip: 'Increment',
+          onPressed: pickColor,
+          child: const Icon(Icons.create_sharp, color: Colors.white, size: 28),
+          ),
       body: GestureDetector(
         onPanUpdate: (details) {
           RenderBox? renderBox = context.findRenderObject() as RenderBox?;
