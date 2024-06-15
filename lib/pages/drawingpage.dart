@@ -14,9 +14,12 @@ class DrawingPage extends StatefulWidget {
 
 
 class _DrawingPageState extends State<DrawingPage> {
+  
   List<DrawingPoints> points = [];
   Color selectedColor = Colors.black;
   double strokeWidth = 2.0;
+
+
   List<Color> colorOptions = [
     Colors.black,
     Colors.red,
@@ -63,30 +66,50 @@ void changeColor(Color color) {
     });
   }
 
+void clearBoard(){
+      setState(() => points.clear());
+}
+
+void setBrushSize()async{
+
+    final selectedFontSize = await showDialog<double>(
+      context: context,
+      builder: (context) => FontSizePickerDialog(initialFontSize: strokeWidth),
+    );
+
+    if (selectedFontSize != null) {
+      setState(() {
+        strokeWidth = selectedFontSize;
+      });
+    }
+}
+
+
+
 Widget _buildFab(BuildContext context) {
-  final icons = [ Icons.edit, Icons.mail, Icons.phone ];
+  final icons = [ Icons.color_lens_sharp, Icons.clear_sharp, Icons.brush ];
   return FabWithIcons(
     icons: icons,
     onIconTapped: (index) {
-      print(index);
+      
     if(index == 0){
       pickColor();
+    }
+    if(index == 1){
+      clearBoard();
+    }
+    if(index == 2){
+      setBrushSize();
     }
     },
   );
 }
-// pickColor
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Draw on Canvas"),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () => setState(() => points.clear()),
-          ),
-        ],
       ),
        floatingActionButton: _buildFab(context),
       body: GestureDetector(
@@ -122,3 +145,54 @@ Widget _buildFab(BuildContext context) {
     );
   }
   }
+
+
+
+
+  class FontSizePickerDialog extends StatefulWidget {
+  /// initial selection for the slider
+  final double initialFontSize;
+
+  const FontSizePickerDialog({super.key, required this.initialFontSize}) ;
+
+  @override
+  _FontSizePickerDialogState createState() => _FontSizePickerDialogState();
+}
+
+class _FontSizePickerDialogState extends State<FontSizePickerDialog> {
+  late double strokeWidth;
+
+  @override
+  void initState() {
+    super.initState();
+    strokeWidth = widget.initialFontSize;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Font Size'),
+      content: Container(
+        child: Slider(
+          value: strokeWidth,
+           label: strokeWidth.round().toString(),
+          max: 10,
+          divisions: 5,
+          onChanged: (value) {
+            setState(() {
+              strokeWidth = value;
+            });
+          },
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context, strokeWidth);
+          },
+          child: Text('Set'),
+        )
+      ],
+    );
+  }
+}
