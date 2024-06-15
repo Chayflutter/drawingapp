@@ -109,7 +109,7 @@ Widget _buildFab(BuildContext context) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Draw on Canvas"),
+        title: const Text("Canvas"),
       ),
        floatingActionButton: _buildFab(context),
       body: GestureDetector(
@@ -171,7 +171,7 @@ class _FontSizePickerDialogState extends State<FontSizePickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Font Size'),
+      title: Text('Brush Size'),
       content: Container(
         child: Slider(
           value: strokeWidth,
