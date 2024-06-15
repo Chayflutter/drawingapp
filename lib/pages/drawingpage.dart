@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:myapp/components/floatingbutton.dart';
 import 'package:myapp/modal/drawingpainter.dart';
 
 class DrawingPage extends StatefulWidget {
@@ -62,8 +63,19 @@ void changeColor(Color color) {
     });
   }
 
-
-
+Widget _buildFab(BuildContext context) {
+  final icons = [ Icons.edit, Icons.mail, Icons.phone ];
+  return FabWithIcons(
+    icons: icons,
+    onIconTapped: (index) {
+      print(index);
+    if(index == 0){
+      pickColor();
+    }
+    },
+  );
+}
+// pickColor
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,12 +88,7 @@ void changeColor(Color color) {
           ),
         ],
       ),
-       floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color.fromRGBO(82, 170, 94, 1.0),
-          tooltip: 'Increment',
-          onPressed: pickColor,
-          child: const Icon(Icons.create_sharp, color: Colors.white, size: 28),
-          ),
+       floatingActionButton: _buildFab(context),
       body: GestureDetector(
         onPanUpdate: (details) {
           RenderBox? renderBox = context.findRenderObject() as RenderBox?;
